@@ -29,5 +29,5 @@ func main() {
 	e.POST("/shorten", l.ShortenLink)
 	e.GET("/", l.RedirectShortendLink)
 	e.GET("/:shortLink", l.RedirectShortendLink)
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":1333"))
 }

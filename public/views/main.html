@@ -1,0 +1,158 @@
+{{define "main"}}
+
+<html>
+
+<head>
+
+  <title>gorala - linkshortener</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/css/spectre.min.css">
+  <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="static/favicon.ico" type="image/x-icon">
+
+
+<body>
+
+  <div class="container centered">
+    <div class="columns" style="margin-left: 15%; margin-right: 15%;">
+
+
+      <div class="column col-12">
+        <form id="form">
+        <div class="empty link-box">
+          <div class="empty-icon"><i class="icon icon-3x icon-people"></i></div>
+          <p class="empty-title h5">Generate a shortened link</p>
+          <p class="empty-subtitle">Simply paste the link you want to be shortened below</p>
+          <div class="empty-action input-group input-inline" style="min-width: 500px;">
+              <input class="form-input" required maxlength="1200" minlength="10"  id="link-field" type="url" placeholder="https://www.google.de">
+              <button type="button" id="generate-btn" class="btn btn-primary input-group-btn" onclick="postShortLinkRequest()">Generate</button>
+          </div>
+          <p class="pt-2 text-error d-none" id="error-field"></p>
+
+          <div class="modal modal-sm" id="success-modal" style="min-width: 700px;">
+            <div class="modal-container" role="document">
+              <div class="modal-header">
+                <a onclick="closeModal()" class="btn btn-clear float-right" aria-label="Close"></a>
+                <div class="modal-title h6">Here is your link</div>
+              </div>
+              <div class="modal-body">
+                <div class="content">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <input readonly id="result-link-success" type="text" class="form-input" onfocus="this.select();" onclick="markAndCopy()">
+                        <button type="button" class="btn btn-primary input-group-btn" onclick="markAndCopy()">Copy</button>
+                      </div>
+                    </div>
+                    <p id="successfully-copied" class="muted d-none text-success">Link copied to your clipboard!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+
+<style>
+  .link-box {
+    background-color: white;
+  }
+
+  .main-wrapper {
+    width: 50%;
+    padding: 20px;
+  }
+</style>
+
+<script>
+
+  function postShortLinkRequest(e) {
+
+    const headers = new Headers();
+    const linkField = document.getElementById('link-field');
+    const btn = document.getElementById('generate-btn');
+    const errorText = document.getElementById('error-field');
+    const form = document.getElementById('form');
+    const copySuccess = document.getElementById('successfully-copied');
+    copySuccess.classList.add('d-none');
+    const linkToBeShortened = linkField.value;
+
+    if(!form.reportValidity()){
+      return;
+    }
+
+    errorText.classList.add('d-none');
+    btn.classList.add('loading');
+
+    headers.append('Accept', 'application/json'); 
+    headers.append('Content-Type', 'application/json');
+
+    return fetch('/shorten', {
+      method: 'POST',
+      mode: 'same-origin',
+      redirect: 'follow',
+      headers: headers,
+      body: JSON.stringify({
+        link: linkToBeShortened,
+      }),
+    }).then(resp => {
+      console.log(resp.status);
+      if(resp.status === 200 || resp.status === 201){
+        handleSuccess(resp);
+      }
+      else{
+        handleError(resp.statusText);
+      }
+    }).catch(err => {
+      handleError(err.message)
+    }).finally(() => {
+      btn.classList.remove('loading');
+    });
+  }
+
+  function handleSuccess(resp) {
+    const successModal = document.getElementById('success-modal');
+    const resultField = document.getElementById('result-link-success');
+    resp.json().then((data) => resultField.value = data.ShortendFullLink);
+    successModal.classList.add('active');
+  }
+
+  function handleError(msg) {
+    const errorText = document.getElementById('error-field');
+    errorText.innerText = `We could not create your link because: ${msg}`;
+    errorText.classList.remove('d-none');
+  }
+
+  function markAndCopy(){
+    try {
+    const resultField = document.getElementById('result-link-success');
+    navigator.clipboard.writeText(resultField.value);
+    } catch (e) {
+      console.log(e);
+    }
+    handleSuccessCopy();
+  }
+
+  function handleSuccessCopy() {
+    const copySuccess = document.getElementById('successfully-copied');
+    copySuccess.classList.remove('d-none');
+  }
+
+  function closeModal(){
+    const successModal = document.getElementById('success-modal');
+    const linkField = document.getElementById('link-field');
+    successModal.classList.remove('active');
+    linkField.value = '';
+    linkField.placeholder='Go for another one!';
+  }
+
+</script>
+
+</html>
+{{end}}

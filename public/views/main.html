@@ -14,42 +14,42 @@
 
 <body>
 
-  <div class="container centered">
+  <div class="modal modal-sm" id="success-modal">
+    <div class="modal-container centered text-center " role="document">
+      <div class="modal-header">
+        <a onclick="closeModal()" class="btn btn-clear float-right" aria-label="Close"></a>
+        <div class="modal-title h6">Here is your link</div>
+      </div>
+      <div class="modal-body">
+        <div class="content">
+            <div class="form-group">
+              <div class="input-group">
+                <input readonly id="result-link-success" type="text" class="form-input" onfocus="this.select();" onclick="markAndCopy()">
+                <button type="button" class="btn btn-primary input-group-btn" onclick="markAndCopy()">Copy</button>
+              </div>
+            </div>
+            <p id="successfully-copied" class="muted d-none text-success">Link copied to your clipboard!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container centered grid-lg">
     <div class="columns" style="margin-left: 15%; margin-right: 15%;">
 
 
       <div class="column col-12">
         <form id="form">
-        <div class="empty link-box">
+        <div class="link-box text-center">
           <div class="empty-icon"><i class="icon icon-3x icon-people"></i></div>
-          <p class="empty-title h5">Generate a shortened link</p>
-          <p class="empty-subtitle">Simply paste the link you want to be shortened below</p>
-          <div class="empty-action input-group input-inline" style="min-width: 500px;">
+          <span class="text-large text-bold">Generate a shortened link</span>
+          <br>
+          <span class="text-muted text-small">Simply paste the link you want to be shortened below</span>
+          <div class="input-group input-inline link-group">
               <input class="form-input" required maxlength="1200" minlength="10"  id="link-field" type="url" placeholder="https://www.google.de">
               <button type="button" id="generate-btn" class="btn btn-primary input-group-btn" onclick="postShortLinkRequest()">Generate</button>
           </div>
           <p class="pt-2 text-error d-none" id="error-field"></p>
-
-          <div class="modal modal-sm" id="success-modal" style="min-width: 700px;">
-            <div class="modal-container" role="document">
-              <div class="modal-header">
-                <a onclick="closeModal()" class="btn btn-clear float-right" aria-label="Close"></a>
-                <div class="modal-title h6">Here is your link</div>
-              </div>
-              <div class="modal-body">
-                <div class="content">
-                    <div class="form-group">
-                      <div class="input-group">
-                        <input readonly id="result-link-success" type="text" class="form-input" onfocus="this.select();" onclick="markAndCopy()">
-                        <button type="button" class="btn btn-primary input-group-btn" onclick="markAndCopy()">Copy</button>
-                      </div>
-                    </div>
-                    <p id="successfully-copied" class="muted d-none text-success">Link copied to your clipboard!</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
       </form>
       </div>
@@ -61,7 +61,13 @@
 
 <style>
   .link-box {
+    padding-top: 5%;
     background-color: white;
+  }
+
+  .link-group {
+    margin-top: 20px;
+    width: 100%;
   }
 
   .main-wrapper {
@@ -102,7 +108,6 @@
         link: linkToBeShortened,
       }),
     }).then(resp => {
-      console.log(resp.status);
       if(resp.status === 200 || resp.status === 201){
         handleSuccess(resp);
       }

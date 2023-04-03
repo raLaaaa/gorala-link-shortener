@@ -14,6 +14,20 @@ import (
 
 type DatabaseService struct{}
 
+func (d DatabaseService) FindAllLinks() ([]models.Link, error) {
+	db, err := gorm.Open(sqlite.Open("database/data.db"), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	db.AutoMigrate(&models.Link{})
+
+	links := []models.Link{}
+	db.Find(&links)
+
+	return links, err
+}
+
 func (d DatabaseService) CreateShortLink(link *(models.Link), host string) error {
 
 	db, err := gorm.Open(sqlite.Open("database/data.db"), &gorm.Config{})

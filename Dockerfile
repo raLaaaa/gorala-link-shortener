@@ -10,7 +10,8 @@ COPY go.sum ./
 RUN go mod download
 COPY . ./
 VOLUME /database
-
+ENV link-admin-name=rala
+ENV link-admin-pw=#97CJrey1ni6
 RUN GO111MODULE=on CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o /gorala-link-shortener
 
 EXPOSE 1333

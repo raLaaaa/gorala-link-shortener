@@ -1,0 +1,52 @@
+{{define "admin"}}
+
+<html>
+
+<head>
+
+  <title>gorala - linkshortener admin</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/css/spectre.min.css">
+  <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="static/favicon.ico" type="image/x-icon">
+
+
+<body>
+    <div class="container">
+    <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Target Link</th>
+            <th>Key</th>
+            <th>Times Visited</th>
+            <th>Created at</th>
+          </tr>
+        </thead>
+        <tbody>
+        {{range $index, $element := .}}
+          <tr>
+            <td>{{ $index }}</td>
+            <td>{{ $element.Link }}</td>
+            <td>{{ $element.ShortendLink }}</td>
+            <td>{{ $element.TimesVisited  }}</td>
+            <td>{{ $element.CreatedAt.Format "2006-01-02"  }}</td>
+          </tr>
+        {{end}}
+        </tbody>
+    </table>    
+</div>
+</body>
+
+<style>
+
+</style>
+
+<script>
+
+
+</script>
+
+</html>
+{{end}}

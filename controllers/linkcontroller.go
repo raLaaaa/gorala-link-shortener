@@ -72,5 +72,5 @@ func (t *LinkController) DeleteLink(c echo.Context) error {
 		fmt.Println(err)
 	}
 
-	return c.Redirect(302, "/admin/main/")
+	return c.Redirect(302, "/admin/main")
 }

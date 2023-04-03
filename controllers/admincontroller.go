@@ -14,7 +14,7 @@ func (a *AdminController) ShowAdmin(c echo.Context) error {
 	links, err := dbService.FindAllLinks()
 
 	if err != nil {
-		return c.Render(http.StatusOK, "admin", err)
+		return c.Render(http.StatusOK, "admin", links)
 	}
 
 	return c.Render(http.StatusOK, "admin", links)

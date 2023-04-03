@@ -19,19 +19,27 @@
           <tr>
             <th>#</th>
             <th>Target Link</th>
+            <th>Created Link</th>
             <th>Key</th>
             <th>Times Visited</th>
             <th>Created at</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
         {{range $index, $element := .}}
           <tr>
             <td>{{ $index }}</td>
-            <td>{{ $element.Link }}</td>
+            <td><a href="{{ $element.Link }}">{{ $element.Link }}</a></td>
+            <td><a href="{{ $element.ShortendFullLink }}" >{{ $element.ShortendFullLink }}</a></td>
             <td>{{ $element.ShortendLink }}</td>
             <td>{{ $element.TimesVisited  }}</td>
-            <td>{{ $element.CreatedAt.Format "2006-01-02"  }}</td>
+            <td>{{ $element.CreatedAt.Format "02.01.2006"  }}</td>
+            <td>
+                <form action="/admin/delete/{{ $element.ShortendLink }}" method="POST">
+                    <button type="submit" class="btn btn-error">Delete</button>
+                </form>
+            </td>
           </tr>
         {{end}}
         </tbody>

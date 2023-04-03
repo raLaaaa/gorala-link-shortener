@@ -28,9 +28,12 @@ func main() {
 	}
 	e.Renderer = renderer
 	e.Static("/static", "static")
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 	e.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(20)))
 
 	g := e.Group("/admin")
+	g.POST("/delete/:linkId", l.DeleteLink)
 	g.Use(middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
 		if username == os.Getenv("link-admin-name") && password == os.Getenv("link-admin-pw") {
 			return true, nil

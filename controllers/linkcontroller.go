@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -19,6 +20,8 @@ func (t *LinkController) RedirectShortendLink(c echo.Context) error {
 
 	if shortLink == "" {
 		return c.Render(http.StatusOK, "main", "")
+	} else if shortLink == "admin/main/" || shortLink == "admin/static/favicon.ico" {
+		return c.Redirect(302, "/admin/main")
 	}
 
 	dbService := services.DatabaseService{}
@@ -52,4 +55,22 @@ func (t *LinkController) ShortenLink(c echo.Context) error {
 	dbService.CreateShortLink(&link, host)
 
 	return c.JSON(http.StatusCreated, link)
+}
+
+func (t *LinkController) DeleteLink(c echo.Context) error {
+
+	linkId := c.Param("linkId")
+
+	if linkId == "" {
+		fmt.Println("Error: linkId is empty")
+	}
+
+	dbService := services.DatabaseService{}
+	err := dbService.DeleteLinkByShortLink(linkId)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return c.Redirect(302, "/admin/main/")
 }

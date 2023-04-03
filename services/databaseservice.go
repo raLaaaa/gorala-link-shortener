@@ -23,7 +23,7 @@ func (d DatabaseService) FindAllLinks() ([]models.Link, error) {
 	db.AutoMigrate(&models.Link{})
 
 	links := []models.Link{}
-	db.Find(&links)
+	db.Order("times_visited desc, id, link, shortend_link, created_at, updated_at, deleted_at, shortend_full_link").Find(&links)
 
 	return links, err
 }
@@ -68,6 +68,22 @@ func (d DatabaseService) FindLinkByShortLink(shortLinkID string) (*models.Link, 
 	}
 
 	return &link, err
+}
+
+func (d DatabaseService) DeleteLinkByShortLink(shortLinkID string) error {
+	db, err := gorm.Open(sqlite.Open("database/data.db"), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	db.AutoMigrate(&models.Link{})
+
+	var link = models.Link{}
+	if result := db.Where("shortend_link = ?", shortLinkID).Delete(&link); result.Error != nil {
+		return result.Error
+	}
+
+	return err
 }
 
 func (d DatabaseService) IncreaseNumbersOfClicked(shortLinkID string) (*models.Link, error) {

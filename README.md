@@ -9,6 +9,7 @@ If you are looking for a minimal solution without much to set up this project mi
 Since the project is sosmall and straight forward it might also be a good starting point if you want to learn Go or [Echo](https://echo.labstack.com/).
 
 If you are looking for a more sophisticated version of a link shortener with a broad feature scope I'd suggest you go with something like [polr](https://github.com/cydrobolt/polr)
+
 Usecases such as a private mode or enhanced statistics are currently not included in this project.
 
 ## Usage

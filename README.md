@@ -30,6 +30,7 @@ You can find a demo version of the project [here](https://l.gorala.icu/) (hopefu
 The admin site can be accessed under [/admin/main](https://l.gorala.icu/admin/main).
 
 See the credentials from above for auth.
+Note that the database from the demo system will be wiped periodically.
 
 
 ## Contributing

@@ -28,6 +28,7 @@ If you are running locally via `go run` make sure to also set the environment va
 You can find a demo version of the project [here](https://l.gorala.icu/)
 
 The admin site can be accessed under [/admin/main](https://l.gorala.icu/admin/main)
+
 See the credentials from above for auth.
 
 

@@ -24,15 +24,6 @@ ENV link-admin-pw=#97CJrey1ni6
 You can adapt those variables to your personal credentials.
 If you are running locally via `go run` make sure to also set the environment variables in case you want to access the admin area.
 
-## Example
-You can find a demo version of the project [here](https://l.gorala.icu/) (hopefully your domain is cooler than mine).
-
-The admin site can be accessed under [/admin/main](https://l.gorala.icu/admin/main).
-
-See the credentials from above for auth.
-Note that the database from the demo system will be wiped periodically.
-
-
 ## Contributing
 Thanks for your interest! Do not hesitate to open an issue if you have a question, feedback or found something that is not working like it should.
 
